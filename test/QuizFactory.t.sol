@@ -18,34 +18,33 @@ contract QuizTest is Test {
     function testCreateQuiz() public {
         
         string memory _id = "Quiz Test";
-        factory.createQuizContract(_id);
+        factory.createQuiz(_id);
 
-        Quiz quiz = factory.getQuiz(_id);
-        // Quiz quiz = factory.quizzes()["test"];
-        emit log_address(address(quiz));
-        emit log_address(address(factory));
-        emit log_address(quiz.owner());
-        assertEq(quiz.owner(), address(factory));
+        address quiz = factory.quizzes(_id);
+
+        assertEq(token.balanceOf(quiz), 0);
         assertEq(factory.owner(), address(this));
 
-        assertEq(_id, quiz.id());
-
-        // quiz.setid("New id");
-        emit log(quiz.id());
+        try factory.createQuiz(_id) {
+            assertTrue(false);
+        } catch {
+            assertTrue(true);
+        }
+        
     }
 
     function triggerReward() public {
         string memory _id = "Quiz Test";
-        factory.createQuizContract(_id);
-        Quiz quiz = factory.getQuiz(_id);
+        factory.createQuiz(_id);
 
-        assertEq(token.balanceOf(address(quiz)), 0);
-        factory.quizTriggerReward(_id, token, address(this), 10);
+        address quiz = factory.quizzes(_id);
+
+        assertEq(token.balanceOf(quiz), 0);
+        factory.sendQuizReward(_id, token, address(this), 10);
 
         assertEq(token.balanceOf(address(this)), 0);
 
-
-        token.transfer(address(quiz), 100);
+        token.transfer(quiz, 100);
         assertEq(token.balanceOf(address(this)), 100);
     }
 
