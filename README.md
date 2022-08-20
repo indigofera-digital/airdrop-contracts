@@ -26,13 +26,20 @@ This will use:
 
 ### Notes
 ---
-
-Put `remappings = ['@ds-test=lib/ds-test/src/','@openzeppelin=lib/openzeppelin-contracts/', '@chainlink=lib/chainlink/']` into `foundry.toml` for imports.
-
 Create your `.env`:
 ```
 RPC_URL=
 PRIVATE_KEY=
 ETHERSCAN_KEY=
+```
+
+To load the variables in the `.env` file before deploy script
+```
+source .env
+```
+
+For imports, set foundry remappings in `foundry.toml`:
+```
+remappings = ['@ds-test=lib/ds-test/src/','@openzeppelin=lib/openzeppelin-contracts/', '@chainlink=lib/chainlink/']
 ```
 
